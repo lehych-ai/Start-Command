@@ -16,7 +16,7 @@ APT_PACKAGES=(
 PIP_PACKAGES=()
 
 NODES=(
-  "https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/ltdrdata/ComfyUI-Manager"
     "https://github.com/lehych-sol/Zen-Face-Detail"
     "https://github.com/lehych-sol/Camera-Forensic-Realism"
     "https://github.com/lehych-sol/Custom-Nodes-by-lehych"
