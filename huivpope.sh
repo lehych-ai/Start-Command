@@ -31,6 +31,7 @@ NODES=(
     "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler"
     "https://github.com/darkamenosa/comfy_nanobanana"
     "https://github.com/chflame163/ComfyUI_LayerStyle"
+    "https://github.com/donkbeef/flashVSRnode"
     "https://github.com/lehych-sol/geek-nodes"
     "https://github.com/lehych-sol/custom-nodes"
     "https://github.com/Lightricks/ComfyUI-LTXVideo"
