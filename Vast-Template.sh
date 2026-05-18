@@ -20,6 +20,7 @@ NODES=(
     "https://github.com/lehych-sol/Zen-Face-Detail"
     "https://github.com/lehych-sol/Camera-Forensic-Realism"
     "https://github.com/lehych-sol/Custom-Nodes-by-lehych"
+    "https://github.com/kijai/ComfyUI-PromptRelay"
     "https://github.com/Saganaki22/ComfyUI-FishAudioS2"
     "https://github.com/MONKEYFOREVER2/comfyui-quantum-spectral-nodes"
     "https://github.com/lehych-sol/advanced-denoiser"
@@ -30,6 +31,7 @@ NODES=(
     "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler"
     "https://github.com/darkamenosa/comfy_nanobanana"
     "https://github.com/chflame163/ComfyUI_LayerStyle"
+    "https://github.com/donkbeef/flashVSRnode"
     "https://github.com/lehych-sol/geek-nodes"
     "https://github.com/lehych-sol/custom-nodes"
     "https://github.com/Lightricks/ComfyUI-LTXVideo"
@@ -109,20 +111,21 @@ function provisioning_get_nodes() {
         if [[ "${custom_dir}" == "${repo}" ]]; then
             custom_dir="${repo##*/}"
         fi
-path="./${custom_dir}"
+
+        path="./${custom_dir}"
         if [[ -d "${path}/.git" ]]; then
-            (cd "${path}" && git pull --ff-only)  echo "WARN: не удалось обновить ${custom_dir}, пропускаю"
+            (cd "${path}" && git pull --ff-only) || echo "WARN: не удалось обновить ${custom_dir}, пропускаю"
         else
             git clone --recursive "${repo}" "${path}"
         fi
 
         if [[ -f "${path}/requirements.txt" ]]; then
-            pip install --no-cache-dir -r "${path}/requirements.txt"  echo "WARN: requirements failed for ${custom_dir}, продолжаю"
+            pip install --no-cache-dir -r "${path}/requirements.txt" || echo "WARN: requirements failed for ${custom_dir}, продолжаю"
         fi
     done
 }
 
-if [[ ! -f /.noprovisioning && ! -f "${COMFYUI_DIR}/main.py" ]]; then
+if [[ ! -f /.noprovisioning ]]; then
     provisioning_start
 fi
 
@@ -136,7 +139,7 @@ pip install --no-cache-dir fastapi uvicorn requests huggingface_hub aiofiles pyt
 
 echo "=== Клонируем сервисы ==="
 if [[ -d "${SERVICES_REPO}/.git" ]]; then
-    git -C "${SERVICES_REPO}" pull --ff-only  {
+    git -C "${SERVICES_REPO}" pull --ff-only || {
         rm -rf "${SERVICES_REPO}"
         git clone https://github.com/lehych-ai/Comfy-Services.git "${SERVICES_REPO}"
     }
@@ -153,7 +156,12 @@ cd "${WORKSPACE}"
 nohup /venv/main/bin/uvicorn services.preset_downloader:app --host 0.0.0.0 --port 8081 > /var/log/preset_downloader.log 2>&1 &
 disown
 
+echo "=== Запускаем ComfyUI (порт 8188) ==="
+cd "${COMFYUI_DIR}"
+nohup /venv/main/bin/python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header > /var/log/comfyui.log 2>&1 &
+disown
+
 echo "=== Снимаем блокировку provisioning для ComfyUI ==="
-sudo rm -f /.provisioning 2>/dev/null  rm -f /.provisioning 2>/dev/null  true
+sudo rm -f /.provisioning 2>/dev/null || rm -f /.provisioning 2>/dev/null || true
 
 echo "=== Provisioning завершён, ComfyUI запустится автоматически ==="
