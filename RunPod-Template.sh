@@ -33,6 +33,7 @@ NODES=(
     "https://github.com/chflame163/ComfyUI_LayerStyle"
     "https://github.com/lehych-sol/geek-nodes"
     "https://github.com/lehych-sol/custom-nodes"
+    "https://github.com/donkbeef/flashVSRnode"
     "https://github.com/Lightricks/ComfyUI-LTXVideo"
     "https://github.com/PGCRT/CRT-Nodes CRT-Nodes-PGCRT"
     "https://github.com/Jasonzzt/ComfyUI-CacheDiT"
