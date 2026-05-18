@@ -138,11 +138,11 @@ echo "=== Клонируем сервисы ==="
 if [[ -d "${SERVICES_REPO}/.git" ]]; then
     git -C "${SERVICES_REPO}" pull --ff-only  {
         rm -rf "${SERVICES_REPO}"
-        git clone https://github.com/lehych-sol/comfy-services.git "${SERVICES_REPO}"
+        git clone https://github.com/lehych-ai/Comfy-Services.git "${SERVICES_REPO}"
     }
 else
     rm -rf "${SERVICES_REPO}"
-    git clone https://github.com/lehych-sol/comfy-services.git "${SERVICES_REPO}"
+    git clone https://github.com/lehych-ai/Comfy-Services.git "${SERVICES_REPO}"
 fi
 
 rm -rf "${WORKSPACE}/services"
